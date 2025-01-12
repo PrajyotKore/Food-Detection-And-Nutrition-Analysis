@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Food Detection System</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #f8f9fa;
+            --accent-color: #4cc9f0;
+            --text-color: #2b2d42;
+            --border-radius: 12px;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f6f8ff 0%, #ffffff 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--text-color);
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            font-weight: 700;
+            background: linear-gradient(120deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            padding: 1rem;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .panel {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f3f9;
+        }
+
+        .panel-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .panel-header i {
+            color: var(--primary-color);
+        }
+
+        .upload-area {
+            border: 2px dashed var(--primary-color);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            text-align: center;
+            background: var(--secondary-color);
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+        }
+
+        .upload-area:hover {
+            border-color: var(--accent-color);
+            background: #f0f7ff;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        button, .custom-file-upload {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+
+        button:hover, .custom-file-upload:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
+        }
+
+        .custom-file-upload {
+            background: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .custom-file-upload:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .image-container {
+            position: relative;
+            width: 100%;
+            min-height: 300px;
+            background: var(--secondary-color);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        #preview, #annotated-image {
+            width: 100%;
+            height: auto;
+            max-height: 500px;
+            object-fit: contain;
+            border-radius: var(--border-radius);
+            display: none;
+        }
+
+        #camera {
+            width: 100%;
+            max-height: 500px;
+            border-radius: var(--border-radius);
+            display: none;
+        }
+
+        .results-container {
+            margin-top: 1.5rem;
+        }
+
+        #detected-items {
+            background: var(--secondary-color);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1.5rem;
+        }
+
+        #nutrition-info {
+            font-family: 'Courier New', monospace;
+            background: var(--secondary-color);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            white-space: pre-wrap;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .loading i {
+            color: var(--primary-color);
+            font-size: 2rem;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .main-container {
+                padding: 1rem;
+            }
+
+            .panel {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <h1><i class="fas fa-utensils"></i> Food Detection System</h1>
+        
+        <div class="container">
+            <div class="panel">
+                <div class="panel-header">
+                    <h2><i class="fas fa-camera"></i> Image Input</h2>
+                </div>
+                <div class="upload-area" id="upload-area">
+                    <div class="button-group">
+                        <label class="custom-file-upload">
+                            <input type="file" id="fileInput" accept="image/*" capture="environment">
+                            <i class="fas fa-upload"></i> Upload Image
+                        </label>
+                        <button onclick="activateCamera()">
+                            <i class="fas fa-camera"></i> Use Camera
+                        </button>
+                    </div>
+                    <p>Drop your image here or click to upload</p>
+                </div>
+                <div class="image-container">
+                    <video id="camera"></video>
+                    <button id="capture" style="display: none;">
+                        <i class="fas fa-camera"></i> Take Photo
+                    </button>
+                    <canvas id="canvas" style="display: none;"></canvas>
+                    <img id="preview">
+                    <div class="loading">
+                        <i class="fas fa-spinner"></i>
+                        <p>Processing image...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">
+                    <h2><i class="fas fa-chart-pie"></i> Analysis Results</h2>
+                </div>
+                <div class="image-container">
+                    <img id="annotated_image">
+                </div>
+                <div class="results-container">
+                    <div id="detected-items"></div>
+                    <h3><i class="fas fa-info-circle"></i> Nutrition Information</h3>
+                    <pre id="nutrition-info"></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let stream = null;
+        const loading = document.querySelector('.loading');
+        const uploadArea = document.getElementById('upload-area');
+        const previewImg = document.getElementById('preview');
+        const annotatedImg = document.getElementById('annotated_image');
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+
+        // Drag and drop handling
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '#4cc9f0';
+            uploadArea.style.background = '#f0f7ff';
+        });
+
+        uploadArea.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '';
+            uploadArea.style.background = '';
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '';
+            uploadArea.style.background = '';
+            
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                handleImageFile(file);
+            }
+        });
+
+        // File upload handling
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                handleImageFile(file);
+            }
+        });
+
+        function handleImageFile(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImg.src = e.target.result;
+                previewImg.style.display = 'block';
+                processImage(file);
+            }
+            reader.readAsDataURL(file);
+        }
+
+        async function activateCamera() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: 'environment' } 
+                });
+                const video = document.getElementById('camera');
+                video.srcObject = stream;
+                video.style.display = 'block';
+                document.getElementById('capture').style.display = 'block';
+                previewImg.style.display = 'none';
+                await video.play();
+            } catch (err) {
+                console.error('Error accessing camera:', err);
+                alert('Error accessing camera. Please make sure you have granted camera permissions.');
+            }
+        }
+
+        document.getElementById('capture').addEventListener('click', async function() {
+            const video = document.getElementById('camera');
+            
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            canvas.toBlob(async function(blob) {
+                const file = new File([blob], "camera-capture.jpg", { type: "image/jpeg" });
+                
+                previewImg.src = URL.createObjectURL(blob);
+                previewImg.style.display = 'block';
+                
+                if (stream) {
+                    stream.getTracks().forEach(track => track.stop());
+                    video.style.display = 'none';
+                    document.getElementById('capture').style.display = 'none';
+                }
+                
+                await processImage(file);
+            }, 'image/jpeg', 0.8);
+        });
+
+        async function processImage(file) {
+            try {
+                loading.style.display = 'block';
+                const formData = new FormData();
+                formData.append('file', file);
+
+                const response = await fetch('/detect', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                handleResponse(data);
+            } catch (error) {
+                handleError(error);
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+
+        function handleResponse(data) {
+            if (data.error) {
+                console.error('Error:', data.error);
+                alert(data.error);
+                return;
+            }
+
+            if (data.annotated_image) {
+                annotatedImg.src = `data:image/jpeg;base64,${data.annotated_image}`;
+                annotatedImg.style.display = 'block';
+            }
+
+            if (data.detected_items) {
+                document.getElementById('detected-items').innerHTML = `
+                    <h3><i class="fas fa-tag"></i> Detected Items:</h3>
+                    <p>${data.detected_items.join(', ')}</p>
+                `;
+            }
+
+            if (data.nutrition_info) {
+                document.getElementById('nutrition-info').textContent = data.nutrition_info;
+            }
+        }
+
+        function handleError(error) {
+            console.error('Error:', error);
+            document.getElementById('nutrition-info').textContent = 'Error processing image. Please try again.';
+            alert('Error processing image. Please try again.');
+        }
+    </script>
+</body>
+</html>
