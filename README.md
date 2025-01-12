@@ -13,6 +13,19 @@ food-detection-and-nutritional-information-demo:
 
 https://github.com/user-attachments/assets/4530e248-639a-4fe6-a00d-35ffe081ea44
 
+### Features:
+Food Detection: Utilize YOLO v11 for accurate and efficient food item recognition in images or live video streams.
+Nutritional Information Generation: Leverage LLaMA 3.2 1B to provide detailed nutritional insights for the detected food items, including calories, macronutrients, and more.
+Seamless Integration: Easily adaptable for real-time applications like mobile apps, websites, and IoT devices.
+### Use Cases:
+Personal health tracking
+Meal planning and dietary analysis
+Smart kitchen and restaurant automation
+### Technologies:
+YOLO v11: State-of-the-art object detection model fine-tuned for food recognition.
+LLaMA 3.2 1B: A powerful language model for generating nutritional descriptions and contextual information.
+Feel free to clone this repository and contribute! 🚀
+
 
 
 ## Project Organization
