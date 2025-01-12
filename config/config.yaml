@@ -1,0 +1,24 @@
+# projects
+
+# Model related 
+MODEL_PATH:  "yolo11l.pt"
+
+# task
+task : 'detect'
+
+
+# Training configuration
+tranining_config:
+  epochs: 100
+  imgsz: 128
+  batch_size: 16
+  patience: 5          # Early stopping patience
+  save_period: 10      # Save checkpoint every X epochs
+  # workers: 8          # Number of worker threads
+  project: "models/YOLO11/runs/train"  # Save results to project/name
+  name: "exp"          # Save results to project/name
+  exist_ok: false      # Existing project/name ok, do not increment
+  pretrained: true     # Use pretrained model
+  optimizer: "SGD"     # Optimizer (SGD, Adam, AdamW, RMSProp)
+  verbose: true        # Print verbose output
+  seed: 42             # Random seed for reproducibility
