@@ -13,7 +13,9 @@ food-detection-and-nutritional-value
 food-detection-and-nutritional-information-demo:
 
 
+
 Uploading food-detection-and-nutritional-information-demo-video-compressed.mp4…
+
 
 
 ### Features:
