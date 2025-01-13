@@ -1,6 +1,6 @@
 
 https://github.com/user-attachments/assets/fb60c93f-8577-4ec4-be17-a08a2ac3e992
-# gh-repo-clone-PrajyotKore-Food-Detection-And-Nutrition-Check
+# Food-Detection-And-Nutrition-Analysis
 This repository combines the power of YOLO v11 and LLaMA 3.2 1B to provide an intelligent food detection and nutritional analysis system
 
 # food-detection-and-nutritional-value
