@@ -11,7 +11,10 @@ food-detection-and-nutritional-value
 food-detection-and-nutritional-information-demo:
 
 
-Uploading food-detection-and-nutritional-information-demo-video-compressed.mp4…
+
+https://github.com/user-attachments/assets/5cfe22f1-4672-47c0-8eca-ca6fa6a5f022
+
+
 
 
 ### Features:
