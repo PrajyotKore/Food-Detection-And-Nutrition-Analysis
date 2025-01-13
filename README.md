@@ -12,7 +12,8 @@ This repository combines the power of YOLO v11 and LLaMA 3.2 1B to provide an in
 food-detection-and-nutritional-value
 food-detection-and-nutritional-information-demo:
 
-https://github.com/user-attachments/assets/c0df91ba-5b5f-4f5d-a461-06ba2d380d91
+
+Uploading food-detection-and-nutritional-information-demo-video-compressed.mp4…
 
 
 ### Features:
