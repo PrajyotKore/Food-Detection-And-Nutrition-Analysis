@@ -1,5 +1,3 @@
-
-https://github.com/user-attachments/assets/fb60c93f-8577-4ec4-be17-a08a2ac3e992
 # Food-Detection-And-Nutrition-Analysis
 This repository combines the power of YOLO v11 and LLaMA 3.2 1B to provide an intelligent food detection and nutritional analysis system
 
@@ -11,6 +9,10 @@ This repository combines the power of YOLO v11 and LLaMA 3.2 1B to provide an in
 
 food-detection-and-nutritional-value
 food-detection-and-nutritional-information-demo:
+
+
+Uploading food-detection-and-nutritional-information-demo-video-compressed.mp4…
+
 
 ### Features:
 Food Detection: Utilize YOLO v11 for accurate and efficient food item recognition in images or live video streams.
